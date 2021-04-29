@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hagglex/services/config.dart';
+import 'package:hagglex/ui/dash_board_screen.dart';
 import 'package:hagglex/ui/login_screen.dart';
 import 'package:hagglex/ui/sign_up_complete.dart';
 import 'package:hagglex/ui/sign_up_screen.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
           },
           SignUpCompletete.routeName: (context) {
             return SignUpCompletete();
+          },
+          DashBoardScreen.routeName: (_) {
+            return DashBoardScreen();
           }
         },
         home: LoginScreen(),

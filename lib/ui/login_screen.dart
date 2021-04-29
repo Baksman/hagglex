@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hagglex/services/config.dart';
+import 'package:hagglex/ui/dash_board_screen.dart';
 import 'package:hagglex/ui/sign_up_screen.dart';
 import '../utils.dart';
 import 'package:flushbar/flushbar.dart';
@@ -18,11 +19,30 @@ class _LoginScreenState extends State<LoginScreen> {
   TextStyle _formStyle = TextStyle(color: Colors.white);
   String email;
   String password;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = context.appHeight;
     return Mutation(
-        options: MutationOptions(document: gql(register)),
+        options: MutationOptions(
+            document: gql(login),
+            onError: (e) {
+              Flushbar(
+                title: "Error",
+
+                message: e.graphqlErrors.first.message,
+                duration: Duration(seconds: 3),
+                flushbarPosition: FlushbarPosition.TOP,
+                backgroundColor: Theme.of(context).primaryColor,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                borderRadius: 5,
+                borderColor: Colors.white,
+                // routeColor: Theme.of(context).primaryColor,
+              )..show(context);
+            },
+            onCompleted: (val) {
+              print(val);
+            }),
         builder: (RunMutation runMutation, QueryResult result) {
           return Scaffold(
             backgroundColor: context.primaryColor,
@@ -96,25 +116,33 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Expanded(
                                 child: CupertinoButton(
-                              child: Text("LOGIN",
-                                  style: TextStyle(color: Colors.black)),
-                              onPressed: () {
-                                Flushbar(
-                                  title: "Hey Ninja",
-
-                                  message:
-                                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-                                  duration: Duration(seconds: 3),
-                                  flushbarPosition: FlushbarPosition.TOP,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  borderRadius: 5,
-                                  borderColor: Colors.white,
-                                  // routeColor: Theme.of(context).primaryColor,
-                                )..show(context);
-                                if (_formKey.currentState.validate()) {}
-                              },
+                              child: result.isLoading
+                                  ? CupertinoActivityIndicator()
+                                  : Text("LOGIN",
+                                      style: TextStyle(color: Colors.black)),
+                              onPressed: result.isLoading
+                                  ? null
+                                  : () {
+                                      if (_formKey.currentState.validate()) {
+                                        var a = {
+                                          "input": email,
+                                          "password": password
+                                        };
+                                        runMutation({'data': a});
+                                        print(result.exception.graphqlErrors
+                                            .first.message);
+                                        print(result.exception.graphqlErrors
+                                            .first.message);
+                                        print(result.exception.graphqlErrors
+                                            .first.message);
+                                        print(result.data);
+                                        if (!result.hasException) {
+                                          Navigator.pushNamed(context,
+                                              DashBoardScreen.routeName);
+                                        }
+                                      }
+                                      // if (_formKey.currentState.validate()) {}
+                                    },
                               color: Theme.of(context).accentColor,
                             )),
                           ],
@@ -125,11 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Center(
                             child: CupertinoButton(
                                 onPressed: () {
-                                  runMutation(
-                                      {'title': "ibrahim", 'id': "shehu"});
-                                  print(result.exception);
-                                  // Navigator.pushNamed(
-                                  //     context, SignUpScreen.routeName);
+                                  Navigator.pushNamed(
+                                      context, SignUpScreen.routeName);
                                 },
                                 child: Text("New User? Create a new account",
                                     style: TextStyle(
