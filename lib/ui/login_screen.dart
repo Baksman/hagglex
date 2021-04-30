@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         };
                                         runMutation({'data': a});
 
-                                        if (!result.hasException) {
+                                        if (result.data != null) {
                                           Navigator.pushNamed(context,
                                               DashBoardScreen.routeName);
                                         }
