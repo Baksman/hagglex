@@ -1,7 +1,8 @@
 import 'package:build_context/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../utils.dart';
+import 'package:hagglex/ui/dash_board_screen.dart';
+import '../utils/mediaquery_utils.dart';
 
 class SignUpCompletete extends StatelessWidget {
   static const routeName = "/signupcomplete";
@@ -21,8 +22,7 @@ class SignUpCompletete extends StatelessWidget {
                 height: screenHeight / 3,
               ),
               Container(
-                height: 70,
-                child: Image.asset("assets/verified_logo.png")),
+                  height: 70, child: Image.asset("assets/verified_logo.png")),
               SizedBox(
                 height: 20,
               ),
@@ -52,7 +52,11 @@ class SignUpCompletete extends StatelessWidget {
                           "START EXPLORING",
                           style: TextStyle(color: context.primaryColor),
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              DashBoardScreen.routeName,
+                              (Route<dynamic> route) => false);
+                        }),
                   )
                 ],
               )

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hagglex/services/config.dart';
 import 'package:hagglex/ui/verification_screen.dart';
-import '../utils.dart';
+import 'package:hagglex/utils/logger_utils.dart';
+import '../utils/mediaquery_utils.dart';
 import 'package:build_context/build_context.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             onError: (e) {
               Flushbar(
                 title: "Error",
-                message: e.toString(),
+                message: e.graphqlErrors.first.message,
                 duration: Duration(seconds: 3),
                 flushbarPosition: FlushbarPosition.TOP,
                 backgroundColor: Theme.of(context).primaryColor,
@@ -128,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 // style: _formStyle,
                                 validator: (val) {
                                   if (val.replaceAll(" ", "").length < 8) {
-                                    return "Create username";
+                                    return "invalid";
                                   }
                                   _password = val;
                                   return null;
@@ -150,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 // style: _formStyle,
                                 validator: (val) {
                                   if (val.replaceAll(" ", "").length < 3) {
-                                    return "invalid";
+                                    return "invalid username";
                                   }
                                   _userName = val;
                                   return null;
@@ -168,8 +169,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               TextFormField(
                                 // style: _formStyle,
                                 validator: (val) {
-                                  if (val.replaceAll(" ", "").length < 8) {
-                                    return "invalid";
+                                  if (val.replaceAll(" ", "").length < 9 ||
+                                      int.tryParse(val) == null) {
+                                    return "invalid mobile number";
                                   }
                                   _phoneNumber = val;
                                   return null;
@@ -239,8 +241,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                         };
                                                         runMutation(
                                                             {'data': a});
-                                                        if (!result
-                                                            .hasException) {
+                                                        if (result.data !=
+                                                            null) {
+                                                               logger.d(result.data);
                                                           Flushbar(
                                                             title: "Success",
 

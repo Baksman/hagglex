@@ -8,13 +8,19 @@ ValueNotifier<GraphQLClient> client = ValueNotifier(
   ),
 );
 
-
 final String register = """
 mutation register(\$data:CreateUserInput!) {
   register(data:\$data) {
  UserRo:user{
- username
-}
+ username,
+ email,
+ phonenumber,
+ _id,
+ kycStatus,
+ referralCode
+
+},
+token
   } 
 }
 """;
@@ -31,4 +37,22 @@ mutation login(\$data:LoginInput!) {
 }
 """;
 
+final String getVerCode = """
+query getRedisVerifyCode(\$data:RedisVerifyCodeInput!) {
+  getRedisVerifyCode(data:\$data) {
+ string
+  } 
+}
+""";
 
+final String verifyUser = """
+mutation verifyUser(\$data:VerifyUserInput!) {
+  verifyUser(data:\$data) {
+ UserRO:user{
+ username,
+  emailVerified
+},
+    token
+  } 
+}
+""";

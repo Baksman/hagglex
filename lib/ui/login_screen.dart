@@ -6,7 +6,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hagglex/services/config.dart';
 import 'package:hagglex/ui/dash_board_screen.dart';
 import 'package:hagglex/ui/sign_up_screen.dart';
-import '../utils.dart';
+import 'package:hagglex/ui/verification_screen.dart';
+import 'package:hagglex/utils/logger_utils.dart';
+import '../utils/mediaquery_utils.dart';
 import 'package:flushbar/flushbar.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -116,13 +118,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Expanded(
                                 child: CupertinoButton(
+                              disabledColor: context.primaryColor,
                               child: result.isLoading
                                   ? CupertinoActivityIndicator()
                                   : Text("LOGIN",
                                       style: TextStyle(color: Colors.black)),
                               onPressed: result.isLoading
                                   ? null
-                                  : () {
+                                  : () async {
                                       if (_formKey.currentState.validate()) {
                                         var a = {
                                           "input": email,
@@ -131,11 +134,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                         runMutation({'data': a});
 
                                         if (result.data != null) {
+                                          if (result.data["login"]["LoginRO"]
+                                                  ["emailVerified"] ??
+                                              false) {
+                                            Navigator.of(context)
+                                                .pushNamedAndRemoveUntil(
+                                                    DashBoardScreen.routeName,
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                            return;
+                                          }
+                                          await Future.delayed(
+                                              Duration(milliseconds: 500));
                                           Navigator.pushNamed(context,
-                                              DashBoardScreen.routeName);
+                                              VerificationScreen.routeName);
                                         }
                                       }
-                                      // if (_formKey.currentState.validate()) {}
                                     },
                               color: Theme.of(context).accentColor,
                             )),

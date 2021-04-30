@@ -10,7 +10,7 @@ class DashBoardScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text("Welcome to Dashboard"),
+            child: Text("Dashboard"),
           )
         ],
       ),
