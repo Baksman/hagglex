@@ -3,25 +3,3 @@ class AuthService {
   
 }
 
-// create user input
-// type CreateUserInput {
-// email: String!
-// username: String!
-// password: String!
-// phonenumber: String!
-// referralCode: String
-// phoneNumberDetails: PhoneNumberDetailsInput
-// country: String!
-// currency: String!
-// }
-// 
-//type PhoneNumberDetailsInput {
-// phoneNumber: String!
-// callingCode: String!
-// flag: String!
-// }
-// 
-// 
-// mutation{
-//   createUserInputs($)
-// }

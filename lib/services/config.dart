@@ -8,15 +8,6 @@ ValueNotifier<GraphQLClient> client = ValueNotifier(
   ),
 );
 
-final String getTasksQuery = """
-query {
-  allTodos {
-    id,
-    title,
-    completed
-  }
-}
-""";
 
 final String register = """
 mutation register(\$data:CreateUserInput!) {
@@ -41,11 +32,3 @@ mutation login(\$data:LoginInput!) {
 """;
 
 
-// email: String!
-// username: String!
-// password: String!
-// phonenumber: String!
-// referralCode: String
-// phoneNumberDetails: PhoneNumberDetailsInput
-// country: String!
-// currency: String!

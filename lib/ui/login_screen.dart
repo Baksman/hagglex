@@ -129,13 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           "password": password
                                         };
                                         runMutation({'data': a});
-                                        print(result.exception.graphqlErrors
-                                            .first.message);
-                                        print(result.exception.graphqlErrors
-                                            .first.message);
-                                        print(result.exception.graphqlErrors
-                                            .first.message);
-                                        print(result.data);
+
                                         if (!result.hasException) {
                                           Navigator.pushNamed(context,
                                               DashBoardScreen.routeName);
